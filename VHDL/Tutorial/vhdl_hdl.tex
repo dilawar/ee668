@@ -82,7 +82,8 @@ can be contacted at \texttt{dilawar@ee.iitb.ac.in}}}
  \emph{Write its equivalent proto-RTL description}. Later, we can simply
  translate this proto-RTL description to VHDL (or any other HDL) by hand, or
  better, we can write a computer program to automate the conversion. This is
- what Mr. Sameer's (guide Prof. Madav Desai) AHIR tool-chain does.
+ what Mr. Sameer's (guide Prof. Madav Desai) AHIR tool-chain does : converts C
+ programs to VHDL.
 
  In this document, we'll describe this circuit directly in VHDL.
  
@@ -113,7 +114,7 @@ can be contacted at \texttt{dilawar@ee.iitb.ac.in}}}
 
 \paragraph{}
 
-  While describing a hardware in VHDL, one needs to know the input and output
+  VHDL gives a block level abstraction of system. One needs to know the input and output
   (hereafter, \textbf{port}) of the system. We have \texttt{a}, \texttt{b},
   \texttt{clk}, and \texttt{reset} as input to (input port of) this system and
   \texttt{out} as the output (port) of this system shown in figure
