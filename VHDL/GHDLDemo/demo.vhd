@@ -18,11 +18,11 @@ USE WORK.ALL;
 -- Here goes the declaration of our entity.
 ENTITY demoEntity IS 
   PORT(
-        a, b : IN BIT;
-        reset : IN BIT;
-        clk : IN BIT;
-        q   : OUT BIT
-      );
+  a, b : IN BIT;
+  reset : IN BIT;
+  clk : IN BIT;
+  q   : OUT BIT
+);
 END ENTITY;
 
 -- Structural architecture
