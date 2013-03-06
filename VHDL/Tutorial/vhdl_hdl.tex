@@ -56,7 +56,8 @@
 
 % Title Page
 \title{Introduction to VHDL}
-\author{Dilawar Singh}
+\author{Dilawar Singh \footnote{His name is pronounced 'the law were'. He works in L.W.C.A. ( Lab Wihtout a Cool Acronym) and
+can be contacted at \texttt{dilawar@ee.iitb.ac.in}}}
 \date{\today}
 
 \begin{document}
@@ -65,51 +66,41 @@
 \begin{abstract}
   
   This is not a tutorial on but a brief introduction to VHDL language. It has
-  been assumed that you have been using at least one programming language such
-  as C/C++. 
+  been assumed that you have been using at least C/C++. 
   
-  To do the VHDL related assignments, you need not know full VHDL.  Only what is 
-  minimal required is discussed here. You need to know entity-architecture
-  pair, data-types, and use of components in VHDL. The best way to learn is, as
-  the Mr. Dodo remarked in Alice in Wonderland, is to do it. 
+  To do VHDL related assignments, you need not know full VHDL.  Only what 
+  minimal is required discussed here. You need to know entity-architecture
+  pair, data-types, and use of components in VHDL. And the best way to learn a
+  language, mimicking Dodo the bird of \emph{Alice in Wonderland} one can say is
+  to write some program in it. 
 
 \end{abstract}
 
 \section{Introduction}
   
- Let's begin with a toy shown in following figure. One excercise is obvious :
- \emph{Write its equivalent proto-RTL description.} Later, we can simply
+ Let's begin with a toy shown in following figure. One exercise is immediate :
+ \emph{Write its equivalent proto-RTL description}. Later, we can simply
  translate this proto-RTL description to VHDL (or any other HDL) by hand, or
- better, we can write a computer program to automate the conversion.
+ better, we can write a computer program to automate the conversion. This is
+ what Mr. Sameer's (guide Prof. Madav Desai) AHIR tool-chain does.
 
  In this document, we'll describe this circuit directly in VHDL.
  
-  \begin{figure}[h]
-    \input{/home/dilawar/Scripts/tikz/circuit_macros.tex}
-    \begin{center}
-      \begin{tikzpicture}[circuit logic US]
+  \begin{figure}[h] \input{/home/dilawar/Scripts/tikz/circuit_macros.tex}
+    \begin{center} \begin{tikzpicture}[circuit logic US]
         %\dflipflop{(c.center)}{2}{2}{``DFF''};
         %% Draw the combinational logic.
-        \matrix[column sep=7mm]
-        {
-          \node (reset) {reset}; & & &  \\
-          \node (a) {a}; & \node[and gate] (a1) {}; &  &  \\ 
-          \node (b) {b};  & \node[not gate] (n1) {};& \node[or gate] (o1) {}; \\
-          \node (clk) {clk};  &  &  \\
-        };
-        \node (dffNode) at ($(o1.east)+(1,-2)$) {};
-        \dflipflop{(dffNode.center)}{1.5}{1.5}{dff};
-        \draw (reset) -| (dff_reset);
-        \draw (a) -- ++(right:5mm) |- (a1.input 1);
-        \draw (b) -- ++(right:5mm) |- (a1.input 2);
-        \draw (b) -- ++(right:5mm) |- (n1.input);
-        \draw (n1.output) -| (o1.input 2);
-        \draw (a1.output) -- ++(right:5mm) |- (o1.input 1);
-        \draw (o1.output) -- ++(right:5mm) |- (dff_d);
-        \draw (clk) -- ++(right:5mm) |- (dff_clock);
-        \draw (dff_q) -- ++(right:10mm) node at ++(0,0) [above] {out};
-      \end{tikzpicture}
-    \end{center}
+        \matrix[column sep=7mm] { \node (reset) {reset}; & & &  \\ \node (a)
+        {a}; & \node[and gate] (a1) {}; &  &  \\ \node (b) {b};  & \node[not
+        gate] (n1) {};& \node[or gate] (o1) {}; \\ \node (clk) {clk};  &  &  \\
+        }; \node (dffNode) at ($(o1.east)+(1,-2)$) {};
+        \dflipflop{(dffNode.center)}{1.5}{1.5}{dff}; \draw (reset) -|
+        (dff_reset); \draw (a) -- ++(right:5mm) |- (a1.input 1); \draw (b) --
+        ++(right:5mm) |- (a1.input 2); \draw (b) -- ++(right:5mm) |- (n1.input);
+        \draw (n1.output) -| (o1.input 2); \draw (a1.output) -- ++(right:5mm) |-
+        (o1.input 1); \draw (o1.output) -- ++(right:5mm) |- (dff_d); \draw (clk)
+        -- ++(right:5mm) |- (dff_clock); \draw (dff_q) -- ++(right:10mm) node at
+        ++(0,0) [above] {out}; \end{tikzpicture} \end{center}
 
     \caption{A small logic circuit. This represents one of the most commonly
     found hardware block : some combinational logic attached to the input of
@@ -133,19 +124,9 @@
 
   Till now, we have the following information about the system :
 
-  \begin{table}[h]
-    \centering
-  \begin{tabular}{c|c|c}
-    Port & Direction & Type \\
-    \hline 
-    a & in & bit \\
-    b & in & bit \\ 
-    clk & in & bit \\ 
-    reset & in & bit \\ 
-    out & out & bit \\
-    \hline
-  \end{tabular}
-\end{table}
+  \begin{table}[h] \centering \begin{tabular}{c|c|c} Port & Direction & Type \\
+    \hline a & in & bit \\ b & in & bit \\ clk & in & bit \\ reset & in & bit \\
+    out & out & bit \\ \hline \end{tabular} \end{table}
 
 
 \section{Entity-Architecture pair in VHDL}
@@ -157,9 +138,8 @@ generate it's output. If an analogy is to be drawn with C/C++ languages, it can
 be said that entity are like function declarations while architecture are like
 function definitions. Enough philosophies! Let's see some code.
 
-\lstinputlisting[language=vhdl, firstline=7
-, caption=Entity declaration  
-, lastline=27]{../GHDLDemo/demo.vhd}
+\lstinputlisting[language=vhdl, firstline=7 , caption=Entity declaration  ,
+lastline=27]{../GHDLDemo/demo.vhd}
 
 And now we have to write the \textbf{architecture} of this entity. There are two
 style of writing architecture. One is called \textbf{structural} and other is
@@ -176,34 +156,26 @@ know), we write behavioural description.
   ensure that.). Behavioural architecture describes \emph{what happens when}
   which can be described by the following equation.
 
-  \begin{equation}
-  out = 
-  \begin{cases}
-    (a \land b) \lor \neg b & \quad \text{on rising edge of clock and reset
-    is unset}\\
-    \text{no change} & \text{otherwise} 
-  \end{cases}
-  \end{equation}
-\end{remark}
+  \begin{equation} out = \begin{cases} (a \land b) \lor \neg b & \quad \text{on
+    rising edge of clock and reset is unset}\\ \text{no change} &
+    \text{otherwise} \end{cases} \end{equation} \end{remark}
 
-\paragraph{Structural architecture}
-  Now let's see how to write the structural architecture.
+\paragraph{Structural architecture} Now let's see how to write the structural
+architecture.
 
-  \lstinputlisting[language=vhdl
-  , caption = We do not define the architecture of components used in this code.
-  Each component again has \textbf{entity-architecture} pair. We can write those
-  in different files and compile that file separately using ghdl. How to do it
-  is available in ghdl manual. 
-  , firstline=27, lastline=74]{../GHDLDemo/demo.vhd}
+  \lstinputlisting[language=vhdl , caption = We do not define the architecture
+  of components used in this code.  Each component again has
+  \textbf{entity-architecture} pair. We can write those in different files and
+  compile that file separately using ghdl. How to do it is available in ghdl
+  manual.  , firstline=27, lastline=74]{../GHDLDemo/demo.vhd}
 
   \paragraph{Behavioural architecture}
 
   This is a more natural way to describe the hardware. Most of the time we think
   in terms of behaviour of the circuit. 
  
-  \lstinputlisting[language=vhdl
-  , caption = Behavioural architecture
-  , firstline=75, lastline=200]{../GHDLDemo/demo.vhd}
+  \lstinputlisting[language=vhdl , caption = Behavioural architecture ,
+  firstline=75, lastline=200]{../GHDLDemo/demo.vhd}
 
 
   \begin{remark}{Multiple architecture}
@@ -225,8 +197,7 @@ know), we write behavioural description.
   about synthesis in this course.  Anyway lets have a look at the hardware is
   generated by Xilinx tool.
 
-  \begin{figure}[h]
-    \centering
+  \begin{figure}[h] \centering
     \includegraphics[width=\textwidth]{./../GHDLDemo/Xilinx/bhav.png}
     \caption{Hardware synthesised by Xilinx tool. Well, it looks like what we
     started with. In real life we usually do not know details of the hardware
@@ -235,8 +206,7 @@ know), we write behavioural description.
     full language. All constructs of a language are not supported by synthesise
     tool and one has to rewrite that particular section of code. A more recent
     language \textbf{bluespec} (available in HPC lab, IIT Bombay) guarantees
-    that if you can compile it, you can synthesise it. }
-    \label{fig:synthesis}
+    that if you can compile it, you can synthesise it. } \label{fig:synthesis}
 
   \end{figure}
 
