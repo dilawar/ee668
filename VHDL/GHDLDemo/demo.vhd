@@ -1,13 +1,21 @@
+-------------------------------------------------------------------------------
+-- Pyri Villainicus, (c) 2013
+-- His human form is known as Dilawar, pronounced 'the law were'. He can be
+-- reached at dilawar@ee.iitb.ac.in
+-------------------------------------------------------------------------------
+
+-- NOTICE : VHDL does not differentiate between lower-case and upper-case words. 
+
 -- These are standard libraries one HAS TO include. 
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
--- WORL library is where all of your current designs are stored. 
--- It is useful to include it.
-
+-- All of your current designs are stored in WORK library. In ghdl you can 
+-- change its path by --work option. We are pretending to use it as if a lot of 
+-- work has been done in WORK library.
 USE WORK.ALL;
 
--- VHDL does not differentiate between lower-case and upper-case words. 
+-- Here goes the declaration of our entity.
 ENTITY demoEntity IS 
   PORT(
         a, b : IN BIT;
