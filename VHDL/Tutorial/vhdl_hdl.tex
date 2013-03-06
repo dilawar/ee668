@@ -173,7 +173,12 @@ description.
     \text{otherwise} \end{cases} \end{equation} \end{remark}
 
 \paragraph{Structural architecture} Now let's see how to write the structural
-architecture.
+architecture. We are using \texttt{COMPONENT} keyword in following listing.
+Components are previously defined entities. This is similar to the idea of
+instantiation of functions. 
+
+We have not defined the entity-architecture pairs for components used in this
+listing. We assume that they are readily available (\texttt{WORK} library).
 
   \lstinputlisting[language=vhdl , caption = We do not define the architecture
   of components used in this code.  Each component again has
@@ -190,11 +195,12 @@ architecture.
   firstline=75, lastline=200]{../GHDLDemo/demo.vhd}
 
 
-  \begin{remark}{Multiple architecture}
+  \begin{remark}{Handling multiple architectures of a single entity}
     
     We can have any number of architectures for one entity. If we do so, it is
     not clear which which architecture to use with the entity. Standard practice
-    in VHDL is to write \textbf{configuration}.
+    in VHDL is to write \textbf{configuration}. We don't discuss them here. If
+    only one architecture is written, ghdl will figure it out by itself.
  
   \end{remark}
 
@@ -212,13 +218,12 @@ architecture.
   \begin{figure}[h] \centering
     \includegraphics[width=\textwidth]{./../GHDLDemo/Xilinx/bhav.png}
     \caption{Hardware synthesised by Xilinx tool. Well, it looks like what we
-    started with. In real life we usually do not know details of the hardware
-    connections. Its bahaviour is specified and simulation is required to say
-    something about its correctness. When we write code for simulation, we can
-    full language. All constructs of a language are not supported by synthesise
-    tool and one has to rewrite that particular section of code. A more recent
-    language \textbf{bluespec} (available in HPC lab, IIT Bombay) guarantees
-    that if you can compile it, you can synthesise it. } \label{fig:synthesis}
+    started with. We synthesised the behavioural architecture. When we write
+    code for simulation, we can use full language. But all constructs of a
+    language are not supported by synthesise tools and one has to rewrite that
+    particular non-supported section of code.} 
+    
+    \label{fig:synthesis}
 
   \end{figure}
 
