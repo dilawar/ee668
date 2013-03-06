@@ -55,8 +55,9 @@
 \newtheorem{theorem}{Theorem}
 
 % Title Page
-\title{Introduction to VHDL}
-\author{Dilawar Singh \footnote{His name is pronounced 'the law were'. He works in L.W.C.A. ( Lab Wihtout a Cool Acronym) and
+\title{Some notes on VHDL}
+\author{Dilawar Singh \footnote{His name is pronounced 'the law were'. He works
+in HPC lab less commonly known as L.W.C.A. ( Lab Wihtout a Cool Acronym). He
 can be contacted at \texttt{dilawar@ee.iitb.ac.in}}}
 \date{\today}
 
@@ -65,14 +66,13 @@ can be contacted at \texttt{dilawar@ee.iitb.ac.in}}}
 
 \begin{abstract}
   
-  This is not a tutorial on but a brief introduction to VHDL language. It has
-  been assumed that you have been using at least C/C++. 
+  It has been assumed that you have been using at least C/C++. 
   
-  To do VHDL related assignments, you need not know full VHDL.  Only what 
-  minimal is required discussed here. You need to know entity-architecture
-  pair, data-types, and use of components in VHDL. And the best way to learn a
-  language, mimicking Dodo the bird of \emph{Alice in Wonderland} one can say is
-  to write some program in it. 
+  To do VHDL related assignments, you need not know full VHDL.  Only what
+  minimal is required discussed here. You need to know entity-architecture pair,
+  data-types, and use of components in VHDL. Mimicking Dodo the bird of
+  \emph{Alice in Wonderland} one can say that the best way to learn a language
+  is to write few programs in it. 
 
 \end{abstract}
 
@@ -81,9 +81,9 @@ can be contacted at \texttt{dilawar@ee.iitb.ac.in}}}
  Let's begin with a toy shown in following figure. One exercise is immediate :
  \emph{Write its equivalent proto-RTL description}. Later, we can simply
  translate this proto-RTL description to VHDL (or any other HDL) by hand, or
- better, we can write a computer program to automate the conversion. This is
- what Mr. Sameer's (guide Prof. Madav Desai) AHIR tool-chain does : converts C
- programs to VHDL.
+ better, we can write a computer program to automate the conversion.
+ \footnote{Dr. Sameer Sahashrabudhdhe work (guide Prof. Madav Desai) AHIR
+ tool-chain does something similar. It converts a C-program to VHDL.}
 
  In this document, we'll describe this circuit directly in VHDL.
  
@@ -112,49 +112,60 @@ can be contacted at \texttt{dilawar@ee.iitb.ac.in}}}
  
   \end{figure}
 
-\paragraph{}
+\paragraph{Abstraction available in VHDL}
 
-  VHDL gives a block level abstraction of system. One needs to know the input and output
-  (hereafter, \textbf{port}) of the system. We have \texttt{a}, \texttt{b},
-  \texttt{clk}, and \texttt{reset} as input to (input port of) this system and
-  \texttt{out} as the output (port) of this system shown in figure
-  \ref{fig:circuit}. Immediately after this we ask the \textbf{type} of ports.
-  We assume that all ports in this system have data-type \textbf{bit}
-  \footnote{See the types available in VHDL language. VHDL type system is
+  VHDL provides a block-level abstraction of system. One needs to know the input
+  and output (hereafter, \textbf{port}) of the system. We have \texttt{a},
+  \texttt{b}, \texttt{clk}, and \texttt{reset} as input (port), and \texttt{out}
+  as the output (port) of system shown in figure \ref{fig:circuit}. Immediately
+  after setting the ports, we ask what sort of data these ports carries : the
+  \textbf{type} of ports.  We assume that all ports in this system have
+  data-type \textbf{bit}. It is usually not the case. We can have vectors of
+  bit, int, double and other custom made data-types. VHDL strong type systems
+  enables a designer to catch some bugs earlier in development process.
+  \footnote{See the types available in VHDL language.  VHDL type system is
   stronger than Verilog. Why should it matter?}.
 
   Till now, we have the following information about the system :
 
-  \begin{table}[h] \centering \begin{tabular}{c|c|c} Port & Direction & Type \\
-    \hline a & in & bit \\ b & in & bit \\ clk & in & bit \\ reset & in & bit \\
-    out & out & bit \\ \hline \end{tabular} \end{table}
+%  \begin{table}[h!] 
+    \begin{tabular}{r c l} 
+      Port & Direction & Type \\
+      \hline a & in & bit \\ 
+      b & in & bit \\ 
+      clk & in & bit \\ 
+      reset & in & bit \\
+      out & out & bit \\ 
+    \hline 
+  \end{tabular} 
+% \end{table}
 
 
-\section{Entity-Architecture pair in VHDL}
+\section{Entity and Architecture pair}
   
-In VHDL, any digital system is described by \textbf{entity-architecture} pair.
-\textbf{Entity} describes what a system receives as input nd what it generates
+In VHDL, any digital block is described by \textbf{entity-architecture} pair.
+\textbf{Entity} describes what a system receives as input and what it generates
 as output. \textbf{Architecture} describes how the system operates on input to
-generate it's output. If an analogy is to be drawn with C/C++ languages, it can
-be said that entity are like function declarations while architecture are like
-function definitions. Enough philosophies! Let's see some code.
+generate its outputs. If an analogy is allowed to be drawn with C/C++ languages,
+it can be said that entity are like function declarations while architecture are
+like function definitions. Let's see some code.
 
 \lstinputlisting[language=vhdl, firstline=7 , caption=Entity declaration  ,
 lastline=27]{../GHDLDemo/demo.vhd}
 
-And now we have to write the \textbf{architecture} of this entity. There are two
-style of writing architecture. One is called \textbf{structural} and other is
-\textbf{behavioural}. If we already know the components (as we do for this
-system) it is straightforward to write the structural description. When we do
-not know the components and their arrangements (in most of the case we do not
-know), we write behavioural description. 
+Now we should write the \textbf{architecture} for this entity. There are two
+styles of writing architecture : \textbf{structural} and \textbf{behavioural}.
+If we already know the components (as we do for this system) it is
+straightforward to write the structural description. When we do not know the
+components and their arrangements (usually the case!), we write behavioural
+description. 
 
 \begin{remark}[Structral vs behaviour]
  
   Structural architecture describes \emph{what is connected with what}. In our
   system we have three gates connected with each other and their output is
   reflected to \texttt{out} at each rising edge of clock (D-flip flop will
-  ensure that.). Behavioural architecture describes \emph{what happens when}
+  ensure it.). Behavioural architecture describes \emph{what happens when}
   which can be described by the following equation.
 
   \begin{equation} out = \begin{cases} (a \land b) \lor \neg b & \quad \text{on
