@@ -1,5 +1,6 @@
 package Gcd;
 import FIFO::*;
+import Vector::*;
 
 (* synthesize *)
 module mkGcd (Empty);
@@ -27,38 +28,31 @@ endinterface
 (* synthesize *)
 module mkPipe (Pipe_ifc);
 
-  FIFO#(int) f1 <- mkFIFO;
-  FIFO#(int) f2 <- mkFIFO;
-  FIFO#(int) f3 <- mkFIFO;
-  FIFO#(int) f4 <- mkFIFO;
+  Integer vecSize = 10;
 
-  rule r2;
-    let v1 = f1.first; f1.deq;
-    $display(" v1 = %0h", v1);
-    f2.enq(v1+1);
-  endrule 
+  Vector#(10, FIFO#(int)) fifoVec <- replicateM(mkFIFO);
 
-  rule r3;
-    let v2 = f2.first; f2.deq;
-    $display(" v2 = %0h", v2);
-    f3.enq(v2+1);
-  endrule 
-
- rule r4;
-    let v3 = f3.first; f3.deq;
-    $display(" v3 = %0h", v3);
-    f4.enq(v3+1);
-  endrule 
-
+  for(Integer i = 0; i < vecSize - 1; i = i+1) begin 
+    rule r;
+      let f = fifoVec[i];
+      let ff = fifoVec[i+1];
+      let v = f.first; f.deq;
+      $display(" v = %0h", v);
+      ff.enq(v+1);
+    endrule   
+  end 
+  
   method Action send(int a);
-    f1.enq (a);
+    let f = fifoVec[0];
+    f.enq(a);
   endmethod
 
   method ActionValue#(int) recieve ();
-    let v4 = f4.first;
-    $display(" v4 = %0h", v4);
-    f4.deq;
-    return v4;
+    let f = fifoVec[9];
+    let v = f.first;
+    $display(" v = %0h", v);
+    f.deq;
+    return v;
   endmethod
 
 endmodule : mkPipe
