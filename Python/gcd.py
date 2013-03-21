@@ -23,10 +23,10 @@ def computeGcd(numbers) :
     At each iteration, Take two numbers out of the list and compute their gcd.
     Add this gcd to the list. 
      
-    At each iteration size of the list is reduced by 1.  Therefore the loop must
-    terminate. We can use loops without any worry.
+    At each iteration size of the list is reduced by 1 (2 consumption and 1
+    addition).  Therefore the loop on size of list will terminate.
 
-    Now we have to argue about the correctness of the algorithm. We can use the
+    Now we should argue about the correctness of the algorithm. We can use the
     properties of gcd to prove that this infact is a correct algorithm. 
     
     We use the following property of gcd. 
@@ -51,14 +51,14 @@ def verifyGcd(gcd, numbers) :
   '''
   What are the properties one should verify?
   
-  I propose two properties are enough. One that gcd divides all given numbers
-  and there is no number between gcd and the minimum among the numbers given
-  which divides given numbers. 
+  I propose two properties which must be satisfied. One that gcd divides all
+  given numbers and there is no number between gcd and the minimum among the
+  given numbers which also divides the given numbers. 
   
-  Former assertion should be ovious : it is the property of gcd that it divides
-  all numbers. For second property : if there is a number (less than or equal to
-  the minimum among the given numbers) which is larger than gcd and divides all
-  given numbers then gcd is not really the GCD. 
+  Former assertion is ovious : it is the property of gcd that it divides all
+  numbers. For second property we can argue that if there is a number (less than
+  or equal to the minimum among the given numbers) which is larger than gcd and
+  divides all given numbers then gcd is not really the GCD. 
 
   '''
   propertyOneIsTrue = True
@@ -81,10 +81,11 @@ def verifyGcd(gcd, numbers) :
     # This is list-comprehension. No need to panic. This is a shorthand to
     # compute the remainders of each element in a list divided by a number i.
     remainders = [operator.mod(x, i) for x in numbers]
-    # If the number has divided each number then there should not be any
+
+    # If the number i has divided each number then there should not be any
     # non-zero entry in remainders. In other words, sum should be zero (given
     # that there are no negative numbers in list such as -2, +2 etc. What the
-    # hell! It wouldn't hurt to write few more lines.
+    # hell! It wouldn't hurt to write few more lines.)
     remainders = [abs(x) for x in remainders]
     if sum(remainders) == 0 : # There is a number greater than gcd which divides
       propertyTwoIsTrue = False
@@ -94,13 +95,14 @@ def verifyGcd(gcd, numbers) :
   else :
     msg += " : Failed "
   print(msg)
+
   if propertyOneIsTrue and propertyTwoIsTrue :
     print("\nRESULT : Men and gentle ladies, {0} is the GCD.".format(gcd))
     print("--- This has been verified!")
     return 0
   else :
     print("\nThe claim that {0} is the GCD is wrong.".format(gcd))
-    print("What an incompetent implementation.")
+    print("--- What an incompetent implementation.")
     return -1
 
 if __name__ == "__main__" :
@@ -121,6 +123,6 @@ if __name__ == "__main__" :
   nums = numbers[:] # Should never modify original data. Copy and pass
   gcd = computeGcd(nums)
   print("+ Number {0} claims to be GCD".format(gcd[0]))
-  print("|- Verifying its claim ...")
+  print("|- Verifying it's claim ...")
   verifyGcd(gcd[0], numbers)
 
