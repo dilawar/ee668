@@ -75,7 +75,8 @@ def verifyGcd(gcd, numbers) :
 
   minNumbers = min(numbers)
   msg = " + verifying that there is no number between {0} and {1}".format(
-      gcd+1, minNumbers) + " which divides all numbers."
+      gcd+1, minNumbers) + " which divides all numbers. This might take a while..."
+  print(msg)
   # It is enough to iterate from gcd to min(numbers) 
   for i in xrange(gcd+1, minNumbers) :
     # This is list-comprehension. No need to panic. This is a shorthand to
@@ -91,9 +92,9 @@ def verifyGcd(gcd, numbers) :
       propertyTwoIsTrue = False
       
   if propertyTwoIsTrue : 
-    msg += " : Passed "
+    msg = " : Passed "
   else :
-    msg += " : Failed "
+    msg = " : Failed "
   print(msg)
 
   if propertyOneIsTrue and propertyTwoIsTrue :
