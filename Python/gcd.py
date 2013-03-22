@@ -64,33 +64,33 @@ def verifyGcd(gcd, numbers) :
   propertyOneIsTrue = True
   propertyTwoIsTrue = True
   msg = " + Verifying that gcd divides all numbers"
+  print(msg)
   for i in numbers :
     if operator.mod(i, gcd) != 0 :
       propertyOneIsTrue = False
   if propertyOneIsTrue :
-    msg += " : Passed "
+    msg = " : Passed "
   else :
-    msg += " : Failed "
+    msg = " : Failed "
   print(msg)
 
   minNumbers = min(numbers)
   msg = " + verifying that there is no number between {0} and {1}".format(
       gcd+1, minNumbers) + " which divides all numbers. This might take a while..."
   print(msg)
-  # It is enough to iterate from gcd to min(numbers) 
+  # It is enough to iterate from gcd+1 to min(numbers) and check that there is
+  # at least one number which can't be divided.
   for i in xrange(gcd+1, minNumbers) :
-    # This is list-comprehension. No need to panic. This is a shorthand to
-    # compute the remainders of each element in a list divided by a number i.
-    remainders = [operator.mod(x, i) for x in numbers]
-
-    # If the number i has divided each number then there should not be any
-    # non-zero entry in remainders. In other words, sum should be zero (given
-    # that there are no negative numbers in list such as -2, +2 etc. What the
-    # hell! It wouldn't hurt to write few more lines.)
-    remainders = [abs(x) for x in remainders]
-    if sum(remainders) == 0 : # There is a number greater than gcd which divides
+    iIsGCD = True
+    for num in numbers :
+      if operator.mod(num, i) != 0 : # There is a number i does not divide
+        iIsGCD = False 
+        break
+    if iIsGCD :  # There is a number i which divides all numbers
+      print("[I] {0} also divides.".format(i))
       propertyTwoIsTrue = False
-      
+      break
+
   if propertyTwoIsTrue : 
     msg = " : Passed "
   else :
